@@ -1,0 +1,1 @@
+ /Users/yangyang/StudioProjects/calendar_scheduler/.dart_tool/flutter_build/5d2ecc625b26159678f391818d336f2c/native_assets.yaml: 

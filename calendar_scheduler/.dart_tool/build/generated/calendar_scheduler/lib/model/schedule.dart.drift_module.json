@@ -1,0 +1,189 @@
+{
+  "elements": {
+    "schedule_table": {
+      "id": {
+        "library_uri": "package:calendar_scheduler/model/schedule.dart",
+        "name": "schedule_table"
+      },
+      "declaration": {
+        "source_uri": "package:calendar_scheduler/model/schedule.dart",
+        "offset": 67,
+        "name": "ScheduleTable"
+      },
+      "references": [],
+      "type": "table",
+      "columns": [
+        {
+          "sqlType": {
+            "builtin": "int"
+          },
+          "nullable": false,
+          "nameInSql": "id",
+          "nameInDart": "id",
+          "declaration": {
+            "source_uri": "package:calendar_scheduler/model/schedule.dart",
+            "offset": 131,
+            "name": "id"
+          },
+          "typeConverter": null,
+          "clientDefaultCode": null,
+          "defaultArgument": null,
+          "overriddenJsonName": null,
+          "documentationComment": null,
+          "constraints": [
+            {
+              "type": "primary",
+              "is_auto_increment": true
+            }
+          ],
+          "customConstraints": null
+        },
+        {
+          "sqlType": {
+            "builtin": "int"
+          },
+          "nullable": false,
+          "nameInSql": "start_time",
+          "nameInDart": "startTime",
+          "declaration": {
+            "source_uri": "package:calendar_scheduler/model/schedule.dart",
+            "offset": 217,
+            "name": "startTime"
+          },
+          "typeConverter": null,
+          "clientDefaultCode": null,
+          "defaultArgument": null,
+          "overriddenJsonName": null,
+          "documentationComment": null,
+          "constraints": [],
+          "customConstraints": null
+        },
+        {
+          "sqlType": {
+            "builtin": "int"
+          },
+          "nullable": false,
+          "nameInSql": "end_time",
+          "nameInDart": "endTime",
+          "declaration": {
+            "source_uri": "package:calendar_scheduler/model/schedule.dart",
+            "offset": 274,
+            "name": "endTime"
+          },
+          "typeConverter": null,
+          "clientDefaultCode": null,
+          "defaultArgument": null,
+          "overriddenJsonName": null,
+          "documentationComment": null,
+          "constraints": [],
+          "customConstraints": null
+        },
+        {
+          "sqlType": {
+            "builtin": "string"
+          },
+          "nullable": false,
+          "nameInSql": "content",
+          "nameInDart": "content",
+          "declaration": {
+            "source_uri": "package:calendar_scheduler/model/schedule.dart",
+            "offset": 327,
+            "name": "content"
+          },
+          "typeConverter": null,
+          "clientDefaultCode": null,
+          "defaultArgument": null,
+          "overriddenJsonName": null,
+          "documentationComment": null,
+          "constraints": [],
+          "customConstraints": null
+        },
+        {
+          "sqlType": {
+            "builtin": "dateTime"
+          },
+          "nullable": false,
+          "nameInSql": "date",
+          "nameInDart": "date",
+          "declaration": {
+            "source_uri": "package:calendar_scheduler/model/schedule.dart",
+            "offset": 381,
+            "name": "date"
+          },
+          "typeConverter": null,
+          "clientDefaultCode": null,
+          "defaultArgument": null,
+          "overriddenJsonName": null,
+          "documentationComment": null,
+          "constraints": [],
+          "customConstraints": null
+        },
+        {
+          "sqlType": {
+            "builtin": "int"
+          },
+          "nullable": false,
+          "nameInSql": "color_id",
+          "nameInDart": "colorId",
+          "declaration": {
+            "source_uri": "package:calendar_scheduler/model/schedule.dart",
+            "offset": 454,
+            "name": "colorId"
+          },
+          "typeConverter": null,
+          "clientDefaultCode": null,
+          "defaultArgument": null,
+          "overriddenJsonName": null,
+          "documentationComment": null,
+          "constraints": [],
+          "customConstraints": null
+        },
+        {
+          "sqlType": {
+            "builtin": "dateTime"
+          },
+          "nullable": false,
+          "nameInSql": "created_at",
+          "nameInDart": "createdAt",
+          "declaration": {
+            "source_uri": "package:calendar_scheduler/model/schedule.dart",
+            "offset": 550,
+            "name": "createdAt"
+          },
+          "typeConverter": null,
+          "clientDefaultCode": {
+            "elements": [
+              "() => ",
+              {
+                "lexeme": "DateTime",
+                "import_uri": "dart:core"
+              },
+              ".now().toUtc()"
+            ]
+          },
+          "defaultArgument": null,
+          "overriddenJsonName": null,
+          "documentationComment": null,
+          "constraints": [],
+          "customConstraints": null
+        }
+      ],
+      "existing_data_class": null,
+      "table_constraints": [],
+      "custom_parent_class": null,
+      "fixed_entity_info_name": null,
+      "base_dart_name": "ScheduleTable",
+      "row_class_name": "ScheduleTableData",
+      "companion_class_name": null,
+      "without_rowid": false,
+      "strict": false,
+      "write_default_constraints": true,
+      "custom_constraints": [],
+      "attached_indices": []
+    }
+  },
+  "imports": [
+    "package:drift/drift.dart",
+    "package:calendar_scheduler/model/category.dart"
+  ]
+}

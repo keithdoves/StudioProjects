@@ -1,0 +1,1 @@
+{"valid_import":true,"imports":[{"uri":"package:drift/drift.dart","transitive":false},{"uri":"package:calendar_scheduler/model/category.dart","transitive":false}],"elements":[{"kind":"table","name":"schedule_table","dart_name":"ScheduleTable"}]}
