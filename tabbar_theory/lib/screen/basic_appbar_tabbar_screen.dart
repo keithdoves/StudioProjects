@@ -7,7 +7,7 @@ class BasicAppbarTabBarScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
+    return DefaultTabController( //컨트롤러가 자동으로 주입됨.
       length: TABS.length, //Tab의 전체 길이
       child: Scaffold(
         appBar: AppBar(
