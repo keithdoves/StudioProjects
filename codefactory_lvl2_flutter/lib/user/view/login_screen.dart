@@ -1,14 +1,35 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:codefactory_lvl2_flutter/common/const/colors.dart';
+import 'package:codefactory_lvl2_flutter/common/const/data.dart';
 import 'package:codefactory_lvl2_flutter/common/layout/default_layout.dart';
+import 'package:codefactory_lvl2_flutter/common/view/root_tab.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../common/component/custom_text_form_field.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  String username = '';
+  String password = '';
+
+  @override
   Widget build(BuildContext context) {
+
+    final dio = Dio();
+    final simulatorIp = '127.0.0.1:3000';
+    final emulatorIp = '10.0.2.2:3000';
+    final ip = Platform.isIOS ? simulatorIp : emulatorIp;
+
     return DefaultLayout(
       child: SingleChildScrollView(
         //키보드를 켜면 화면을 덮어버린다.
@@ -38,21 +59,55 @@ class LoginScreen extends StatelessWidget {
                 ),
                 CustomTextFormField(
                   hintText: '이메일을 입력해주세요',
-                  onChanged: (String value) {},
+                  onChanged: (String value) {
+                    username = value;
+                  },
                 ),
                 SizedBox(
                   height: 10.0,
                 ),
                 CustomTextFormField(
                   hintText: '비밀번호를 입력해주세요',
-                  onChanged: (String value) {},
+                  onChanged: (String value) {
+                    password = value;
+                  },
                   obscureText: true,
                 ),
                 SizedBox(
                   height: 10.0,
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final rawString = '$username:$password';
+                    //print(rawString);
+                    Codec<String, String> stringToBase64 = utf8.fuse(base64);
+                    String token = stringToBase64.encode(rawString);
+
+                    final resp = await dio.post(
+                      'http://$ip/auth/login',
+                      options: Options(
+                        headers: {
+                          'authorization': 'Basic $token',
+                        },
+                      ),
+                    ); //에러 발생시 밑에 코드 실행 안 함
+
+                    resp.data; //AccessToken과 RefreshToken이 map으로 들어있음
+                    final refreshToken = resp.data['refreshToken'];
+                    final accessToken = resp.data['accessToken'];
+
+                    //토큰 프론트에 저장하기
+                    await storage.write(key: REFRESH_TOKEN_KEY, value: refreshToken);
+                    await storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
+
+
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => RootTab(),
+                      ),
+                    );
+
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: PRIMARY_COLOR,
                     foregroundColor: Colors.white,
@@ -62,7 +117,20 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final refreshToken =
+                        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RAY29kZWZhY3RvcnkuYWkiLCJzdWIiOiJmNTViMzJkMi00ZDY4LTRjMWUtYTNjYS1kYTlkN2QwZDkyZTUiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTcyNjIwNTc4MywiZXhwIjoxNzI2MjkyMTgzfQ.xyiA9ev2YCRfXSCOq0KUCftMexK6CvkP0dRS8X_Ej54';
+
+                    final resp = await dio.post(
+                      'http://$ip/auth/token',
+                      options: Options(
+                        headers: {
+                          'authorization': 'Bearer $refreshToken',
+                        },
+                      ),
+                    );
+                    print(resp.data);
+                  },
                   style: TextButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: Colors.black,
