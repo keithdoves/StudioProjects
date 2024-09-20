@@ -7,8 +7,6 @@ import 'package:codefactory_lvl2_flutter/common/layout/default_layout.dart';
 import 'package:codefactory_lvl2_flutter/common/view/root_tab.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 import '../../common/component/custom_text_form_field.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -25,10 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
 
-    final dio = Dio();
-    final simulatorIp = '127.0.0.1:3000';
-    final emulatorIp = '10.0.2.2:3000';
-    final ip = Platform.isIOS ? simulatorIp : emulatorIp;
+
 
     return DefaultLayout(
       child: SingleChildScrollView(
@@ -118,18 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 TextButton(
                   onPressed: () async {
-                    final refreshToken =
-                        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RAY29kZWZhY3RvcnkuYWkiLCJzdWIiOiJmNTViMzJkMi00ZDY4LTRjMWUtYTNjYS1kYTlkN2QwZDkyZTUiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTcyNjIwNTc4MywiZXhwIjoxNzI2MjkyMTgzfQ.xyiA9ev2YCRfXSCOq0KUCftMexK6CvkP0dRS8X_Ej54';
 
-                    final resp = await dio.post(
-                      'http://$ip/auth/token',
-                      options: Options(
-                        headers: {
-                          'authorization': 'Bearer $refreshToken',
-                        },
-                      ),
-                    );
-                    print(resp.data);
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: Colors.white,
