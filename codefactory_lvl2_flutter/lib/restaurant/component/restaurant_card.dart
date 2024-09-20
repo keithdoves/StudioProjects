@@ -1,19 +1,26 @@
 import 'package:codefactory_lvl2_flutter/common/const/colors.dart';
 import 'package:flutter/material.dart';
 
+import '../model/restaurant_model.dart';
+
 class RestaurantCard extends StatelessWidget {
   final Widget image;
 
   //레스토랑 이름
   final String name;
+
   //레스토랑 태그
   final List<String> tags;
+
   //평점 갯수
   final int ratingsCount;
+
   //배송걸리는 시간
   final int deliveryTime;
+
   //배송 비용
   final int deliveryFee;
+
   //평균 평점
   final double ratings;
 
@@ -27,6 +34,19 @@ class RestaurantCard extends StatelessWidget {
       required this.ratings,
       Key? key})
       : super(key: key);
+
+  factory RestaurantCard.fromModel({
+    required RestaurantModel model,
+  }) {
+    return RestaurantCard(
+        image: Image.network(model.thumbUrl, fit: BoxFit.cover),
+        name: model.name,
+        tags: model.tags,
+        ratingsCount: model.ratingsCount,
+        deliveryTime: model.deliveryTime,
+        deliveryFee: model.deliveryFee,
+        ratings: model.ratings);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +102,7 @@ class RestaurantCard extends StatelessWidget {
                 renderDot(),
                 _IconText(
                   icon: Icons.monetization_on,
-                  label: deliveryFee == 0? '무료' : deliveryFee.toString(),
+                  label: deliveryFee == 0 ? '무료' : deliveryFee.toString(),
                 ),
               ],
             )
@@ -92,14 +112,18 @@ class RestaurantCard extends StatelessWidget {
     );
   }
 
-  renderDot(){
+  renderDot() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4.0,),
-      child: Text('·',
-      style: TextStyle(
-        fontSize: 12.0,
-        fontWeight: FontWeight.w600,
-      ),),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 4.0,
+      ),
+      child: Text(
+        '·',
+        style: TextStyle(
+          fontSize: 12.0,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
     );
   }
 }
@@ -137,4 +161,3 @@ class _IconText extends StatelessWidget {
     );
   }
 }
-
