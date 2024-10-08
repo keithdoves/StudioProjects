@@ -31,7 +31,9 @@ class RestaurantModel {
     required this.deliveryFee,
   });
 
-  factory RestaurantModel.fromJson({required Map<String, dynamic> json,}){
+  factory RestaurantModel.fromJson({
+    required Map<String, dynamic> json,
+  }) {
     return RestaurantModel(
         id: json['id'],
         name: json['name'],

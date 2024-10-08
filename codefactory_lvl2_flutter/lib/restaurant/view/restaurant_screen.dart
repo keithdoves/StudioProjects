@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:codefactory_lvl2_flutter/restaurant/component/restaurant_card.dart';
 import 'package:codefactory_lvl2_flutter/restaurant/model/restaurant_model.dart';
+import 'package:codefactory_lvl2_flutter/restaurant/view/restaurant_detail_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,7 @@ import '../../common/const/data.dart';
 class RestaurantScreen extends StatelessWidget {
   RestaurantScreen({Key? key}) : super(key: key);
 
-  Future<List> paginateResturant() async {
+  Future<List> paginateRestaurant() async {
     final dio = Dio();
     final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
 
@@ -35,10 +36,12 @@ class RestaurantScreen extends StatelessWidget {
             horizontal: 16.0,
           ),
           child: FutureBuilder(
-            future: paginateResturant(),
+            future: paginateRestaurant(),
             builder: (context, AsyncSnapshot<List> snapshot) {
               if (!snapshot.hasData) {
-                return Container();
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
               }
               return ListView.separated(
                 itemCount: snapshot.data!.length,
@@ -62,8 +65,17 @@ class RestaurantScreen extends StatelessWidget {
                       deliveryTime: item['deliveryTime'],
                       deliveryFee: item['deliveryFee']);*/
 
-                  return RestaurantCard.fromModel(model: pItem);
-
+                  return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => RestaurantDetailScreen(
+                              id: pItem.id,
+                            ),
+                          ),
+                        );
+                      },
+                      child: RestaurantCard.fromModel(model: pItem));
                 },
               );
 
