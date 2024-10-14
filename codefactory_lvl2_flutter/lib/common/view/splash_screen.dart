@@ -69,13 +69,13 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: PRIMARY_COLOR,
       child: SizedBox(
         //column의 center 정렬을 위해 화면 만큼 너비를 가진 사이즈드박스로 감싸줌
-        width: MediaQuery.of(context).size.width, //lvl_1 컬럼로우 섹션 다시보기
+        width: MediaQuery.sizeOf(context).width, //lvl_1 컬럼로우 섹션 다시보기
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
               'asset/img/logo/logo.png',
-              width: MediaQuery.of(context).size.width / 2,
+              width: MediaQuery.sizeOf(context).width / 2,
             ),
             const SizedBox(
               height: 16.0,

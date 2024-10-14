@@ -33,6 +33,7 @@ class DefaultLayout extends StatelessWidget {
     } else {
       return AppBar(
         backgroundColor: Colors.white,
+        //automaticallyImplyLeading: false, // 뒤로가기 버튼을 숨깁니다.
         elevation: 0,
         title: Text(
           title!,
