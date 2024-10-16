@@ -85,7 +85,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           'authorization': 'Basic $token',
                         },
                       ),
-                    ); //에러 발생시 밑에 코드 실행 안 함
+                    ).catchError((error){
+                      print('Error: $error');
+                    }); //에러 발생시 밑에 코드 실행 안 함
 
                     resp.data; //AccessToken과 RefreshToken이 map으로 들어있음
                     final refreshToken = resp.data['refreshToken'];
