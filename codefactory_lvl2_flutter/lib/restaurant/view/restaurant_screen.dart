@@ -18,6 +18,9 @@ class RestaurantScreen extends StatelessWidget {
       CustomInterceptor(storage: storage),
     );
 
+    // CursorPagination 객체가 리턴되고
+    // 그 안에 RestaurantModel이 data란 프로퍼티에
+    // 들어있음
     final resp =
        await RestaurantRepository(dio, baseUrl: 'http://$ip/restaurant')
        .paginate();
