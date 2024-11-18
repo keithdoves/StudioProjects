@@ -1,6 +1,19 @@
 import 'package:codefactory_lvl2_flutter/common/const/data.dart';
+import 'package:codefactory_lvl2_flutter/common/secure_storage/secure_storage.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+final dioProvider = Provider<Dio>((ref) {
+  final dio = Dio();
+  final storage = ref.watch(secureStorageProvider);
+
+  dio.interceptors.add(
+    CustomInterceptor(storage: storage),
+  );
+
+  return dio;
+});
 
 class CustomInterceptor extends Interceptor {
   final FlutterSecureStorage storage;
@@ -47,9 +60,11 @@ class CustomInterceptor extends Interceptor {
 // 2) 응답을 받을 때
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    print('[RES] [${response.requestOptions.method}] ${response.requestOptions.uri}');
+    print(
+        '[RES] [${response.requestOptions.method}] ${response.requestOptions.uri}');
     return super.onResponse(response, handler);
   }
+
 // 3) 에러가 났을 때
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
@@ -91,7 +106,7 @@ class CustomInterceptor extends Interceptor {
           'authorization': 'Bearer $accessToken',
         });
         // d. storage에 새 accessToken 저장
-        await storage.write(key : ACCESS_TOKEN_KEY, value: accessToken);
+        await storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
         // e. 원래 보내려던 요청 재전송 함.
         final response = await dio.fetch(options);
 
@@ -99,7 +114,7 @@ class CustomInterceptor extends Interceptor {
         // f. 즉 실제 에러가 났지만, 에러가 나지 않은 것처럼 됨
         return handler.resolve(response);
 
-         // g. on DioException : Dio관련된 Exception만 잡힘.
+        // g. on DioException : Dio관련된 Exception만 잡힘.
       } on DioException catch (e) {
         return handler.reject(e); //try에서 에러나면 에러 발생시킴.
       }

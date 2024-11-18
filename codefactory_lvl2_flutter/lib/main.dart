@@ -2,10 +2,13 @@ import 'package:codefactory_lvl2_flutter/common/component/custom_text_form_field
 import 'package:codefactory_lvl2_flutter/common/view/splash_screen.dart';
 import 'package:codefactory_lvl2_flutter/user/view/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
   runApp(
-    _App(),
+    ProviderScope(
+      child: _App(),
+    ),
   );
 }
 
