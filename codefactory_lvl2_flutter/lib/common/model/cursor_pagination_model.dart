@@ -39,7 +39,7 @@ class CursorPagination<T> extends CursorPaginationBase {
     CursorPaginationMeta? meta,
     List<T>? data,
   }) {
-    return CursorPagination(
+    return CursorPagination<T>(
       meta: meta ?? this.meta,
       data: data ?? this.data,
     );
@@ -52,6 +52,7 @@ class CursorPagination<T> extends CursorPaginationBase {
   ) =>
       _$CursorPaginationFromJson(json, fromJsonT);
 }
+
 
 @JsonSerializable()
 class CursorPaginationMeta {

@@ -1,6 +1,7 @@
 import 'package:codefactory_lvl2_flutter/common/dio/dio.dart';
 import 'package:codefactory_lvl2_flutter/common/model/cursor_pagination_model.dart';
 import 'package:codefactory_lvl2_flutter/common/model/pagination_params.dart';
+import 'package:codefactory_lvl2_flutter/common/repository/base_pagination_repository.dart';
 import 'package:codefactory_lvl2_flutter/restaurant/model/restaurant_detail_model.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,14 +12,16 @@ import '../model/restaurant_model.dart';
 
 part 'restaurant_repository.g.dart';
 
-final restaurantRepositoryProvider = Provider<RestaurantRepository>((ref)  {
+final restaurantRepositoryProvider = Provider<RestaurantRepository>((ref) {
   final dio = ref.watch(dioProvider);
-  final repository = RestaurantRepository(dio, baseUrl: 'http://$ip/restaurant');
+  final repository =
+      RestaurantRepository(dio, baseUrl: 'http://$ip/restaurant');
   return repository;
 });
 
 @RestApi()
-abstract class RestaurantRepository {
+abstract class RestaurantRepository
+    implements IBasePaginationRepository<RestaurantModel> {
   //인스턴스화 되지 않도록 추상으로 선언
   // http://$ip/restaurant
   factory RestaurantRepository(Dio dio, {String baseUrl}) =
@@ -29,10 +32,10 @@ abstract class RestaurantRepository {
   @Headers({
     'accessToken': 'true',
   }) //RestaurantModel을 받을 수 없음. 반환 하는 데이터가 다름.
-    Future<CursorPagination<RestaurantModel>> paginate({
+  Future<CursorPagination<RestaurantModel>> paginate({
     @Queries() PaginationParams? paginationParams = const PaginationParams(),
     //@Queries()를 넣어 쿼리 파라미터로 만들 수 있음
-});
+  });
 
   // http://$ip/restaurant/:id
   @GET('/{id}')
