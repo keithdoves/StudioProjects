@@ -1,0 +1,24 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+class DefaultLayout extends StatelessWidget {
+  final Widget body;
+
+  const DefaultLayout({required this.body, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          //화면에서 path가 어디인지 보여줌
+          GoRouterState.of(context).location,
+        ),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: body,
+      ),
+    );
+  }
+}
