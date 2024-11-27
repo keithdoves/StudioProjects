@@ -2,6 +2,7 @@ import 'package:codefactory_lvl2_flutter/common/layout/default_layout.dart';
 import 'package:codefactory_lvl2_flutter/restaurant/view/restaurant_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../../product/view/product_screen.dart';
 import '../const/colors.dart';
 
 class RootTab extends StatefulWidget {
@@ -37,6 +38,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+
     return DefaultLayout(
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: PRIMARY_COLOR,
@@ -81,18 +83,10 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
           physics: NeverScrollableScrollPhysics(), //좌우드레그로 탭 이동 막음
           controller: controller,
           children: [
-            Center(
-              child: RestaurantScreen(),
-            ),
-            Center(
-              child: RestaurantScreen(),
-            ),
-            Center(
-              child: RestaurantScreen(),
-            ),
-            Center(
-              child: RestaurantScreen(),
-            ),
+            RestaurantScreen(),
+            ProductScreen(),
+            Center(child: Container(child: Text('주문'),),),
+            Center(child: Container(child: Text('프로필'),),),
           ],
         ),
       ),

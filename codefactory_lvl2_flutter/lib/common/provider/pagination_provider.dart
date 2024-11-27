@@ -60,9 +60,9 @@ class PaginationProvider<T extends IModelWithId,
 
       final isLoading = state is CursorPaginationLoading;
       final isRefetching = state is CursorPaginationRefetching;
-      final isRefetchingMore = state is CursorPaginationFetchingMore;
+      final isFetchingMore = state is CursorPaginationFetchingMore;
       //Z1-2
-      if (fetchMore && (isLoading || isRefetching || isRefetchingMore)) {
+      if (fetchMore && (isLoading || isRefetching || isFetchingMore)) {
         return;
       }
 //데이터 갖고 오는 로직 시작-------------------------------------------------------------
