@@ -1,11 +1,13 @@
 import 'package:codefactory_lvl2_flutter/common/layout/default_layout.dart';
 import 'package:codefactory_lvl2_flutter/restaurant/view/restaurant_screen.dart';
+import 'package:codefactory_lvl2_flutter/user/view/profile_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../product/view/product_screen.dart';
 import '../const/colors.dart';
 
 class RootTab extends StatefulWidget {
+  static String get routeName => '/';
   const RootTab({super.key});
 
   @override
@@ -86,7 +88,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
             RestaurantScreen(),
             ProductScreen(),
             Center(child: Container(child: Text('주문'),),),
-            Center(child: Container(child: Text('프로필'),),),
+            ProfileScreen(),
           ],
         ),
       ),

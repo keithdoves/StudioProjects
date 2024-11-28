@@ -1,15 +1,18 @@
 import 'package:codefactory_lvl2_flutter/common/const/data.dart';
 import 'package:codefactory_lvl2_flutter/common/secure_storage/secure_storage.dart';
+import 'package:codefactory_lvl2_flutter/user/provider/user_me_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import '../../user/provider/auth_provider.dart';
 
 final dioProvider = Provider<Dio>((ref) {
   final dio = Dio();
   final storage = ref.watch(secureStorageProvider);
 
   dio.interceptors.add(
-    CustomInterceptor(storage: storage),
+    CustomInterceptor(storage: storage, ref: ref),
   );
 
   return dio;
@@ -17,9 +20,11 @@ final dioProvider = Provider<Dio>((ref) {
 
 class CustomInterceptor extends Interceptor {
   final FlutterSecureStorage storage;
+  final Ref ref;
 
   CustomInterceptor({
     required this.storage,
+    required this.ref,
   });
 
   // 1) 요청 보낼 때
@@ -116,6 +121,10 @@ class CustomInterceptor extends Interceptor {
 
         // g. on DioException : Dio관련된 Exception만 잡힘.
       } on DioException catch (e) {
+        // circular dependency error
+        // userMeProvider는 dio가 필요하고, dio가 userMeProvider를 필요로 함.
+        ref.read(authProvider.notifier).logout();
+
         return handler.reject(e); //try에서 에러나면 에러 발생시킴.
       }
     }
