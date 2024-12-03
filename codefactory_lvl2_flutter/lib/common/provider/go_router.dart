@@ -11,7 +11,6 @@ final routerProvider = Provider<GoRouter>((ref) {
   final provider = ref.watch(authProvider);
 
 
-  print('GoRouter 초기화');
   return GoRouter(
     routes: provider.routes,
     initialLocation: '/splash',

@@ -8,7 +8,7 @@ import '../model/pagination_params.dart';
 //Pagination할 모델의 타입(T)과 Repository 타입(U)을 제네릭에 넣어주면
 //이 PaginationProvider는 자동으로 페이지네이션 로직을 구현한다.
 class PaginationProvider<T extends IModelWithId,
-        U extends IBasePaginationRepository<T>>
+U extends IBasePaginationRepository<T>>
     extends StateNotifier<CursorPaginationBase> {
   final U repository;
 
@@ -137,3 +137,4 @@ class PaginationProvider<T extends IModelWithId,
     // state = resp;
   }
 }
+

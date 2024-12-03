@@ -1,4 +1,5 @@
 import 'package:codefactory_lvl2_flutter/common/layout/default_layout.dart';
+import 'package:codefactory_lvl2_flutter/order/view/order_screen.dart';
 import 'package:codefactory_lvl2_flutter/restaurant/view/restaurant_screen.dart';
 import 'package:codefactory_lvl2_flutter/user/view/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -87,7 +88,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
           children: [
             RestaurantScreen(),
             ProductScreen(),
-            Center(child: Container(child: Text('주문'),),),
+            OrderScreen(),
             ProfileScreen(),
           ],
         ),

@@ -27,7 +27,7 @@ class _App extends ConsumerWidget {
         fontFamily: 'NotoSans',
       ),
       debugShowCheckedModeBanner: false,
-      routerConfig : router,
+      routerConfig: router,
     );
   }
 }

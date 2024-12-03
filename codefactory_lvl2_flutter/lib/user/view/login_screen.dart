@@ -29,6 +29,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(userMeProvider);
+
+    if (state is UserModelError) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('로그인에 실패했습니다. 다시 시도해주세요.'),
+            duration: Duration(seconds: 3),
+            dismissDirection: DismissDirection.up,
+          ),
+        );
+      });
+    }
+
     print('LoginScreen에서 userMeProvider 상태: $state');
 
     return DefaultLayout(
@@ -79,45 +92,45 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 ElevatedButton(
                   onPressed: state is UserModelLoading
-                    ? null :
-                      () async {
-                    ref.read(userMeProvider.notifier).login(
-                          username: username,
-                          password: password,
-                        );
+                      ? null
+                      : () async {
+                          ref.read(userMeProvider.notifier).login(
+                                username: username,
+                                password: password,
+                              );
 
-                    // final rawString = '$username:$password';
-                    // //print(rawString);
-                    // Codec<String, String> stringToBase64 = utf8.fuse(base64);
-                    // String token = stringToBase64.encode(rawString);
-                    //
-                    // final resp = await dio.post(
-                    //   'http://$ip/auth/login',
-                    //   options: Options(
-                    //     headers: {
-                    //       'authorization': 'Basic $token',
-                    //     },
-                    //   ),
-                    // ).catchError((error){
-                    //   print('Error: $error');
-                    // }); //에러 발생시 밑에 코드 실행 안 함
-                    //
-                    // resp.data; //AccessToken과 RefreshToken이 map으로 들어있음
-                    // final refreshToken = resp.data['refreshToken'];
-                    // final accessToken = resp.data['accessToken'];
-                    //
-                    // final storage = ref.read(secureStorageProvider);
-                    // //토큰 프론트에 저장하기
-                    // await storage.write(key: REFRESH_TOKEN_KEY, value: refreshToken);
-                    // await storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
-                    //
-                    //
-                    // Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (_) => RootTab(),
-                    //   ),
-                    // );
-                  },
+                          // final rawString = '$username:$password';
+                          // //print(rawString);
+                          // Codec<String, String> stringToBase64 = utf8.fuse(base64);
+                          // String token = stringToBase64.encode(rawString);
+                          //
+                          // final resp = await dio.post(
+                          //   'http://$ip/auth/login',
+                          //   options: Options(
+                          //     headers: {
+                          //       'authorization': 'Basic $token',
+                          //     },
+                          //   ),
+                          // ).catchError((error){
+                          //   print('Error: $error');
+                          // }); //에러 발생시 밑에 코드 실행 안 함
+                          //
+                          // resp.data; //AccessToken과 RefreshToken이 map으로 들어있음
+                          // final refreshToken = resp.data['refreshToken'];
+                          // final accessToken = resp.data['accessToken'];
+                          //
+                          // final storage = ref.read(secureStorageProvider);
+                          // //토큰 프론트에 저장하기
+                          // await storage.write(key: REFRESH_TOKEN_KEY, value: refreshToken);
+                          // await storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
+                          //
+                          //
+                          // Navigator.of(context).push(
+                          //   MaterialPageRoute(
+                          //     builder: (_) => RootTab(),
+                          //   ),
+                          // );
+                        },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: PRIMARY_COLOR,
                     foregroundColor: Colors.white,

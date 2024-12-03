@@ -1,14 +1,17 @@
 import 'package:badges/badges.dart';
 import 'package:codefactory_lvl2_flutter/common/const/colors.dart';
 import 'package:codefactory_lvl2_flutter/common/layout/default_layout.dart';
+import 'package:codefactory_lvl2_flutter/common/provider/go_router.dart';
 import 'package:codefactory_lvl2_flutter/common/utils/pagination_utils.dart';
 import 'package:codefactory_lvl2_flutter/product/component/product_card.dart';
 import 'package:codefactory_lvl2_flutter/product/model/product_model.dart';
 import 'package:codefactory_lvl2_flutter/rating/component/rating_card.dart';
 import 'package:codefactory_lvl2_flutter/restaurant/provider/restaurant_provider.dart';
+import 'package:codefactory_lvl2_flutter/restaurant/view/basket_screen.dart';
 import 'package:codefactory_lvl2_flutter/user/provider/basket_provider.dart';
 import 'package:flutter/material.dart' hide Badge;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../common/model/cursor_pagination_model.dart';
@@ -77,7 +80,9 @@ class _RestaurantDetailScreenState
     return DefaultLayout(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.white70,
-        onPressed: () {},
+        onPressed: () {
+          context.pushNamed(BasketScreen.routeName);
+        },
         child: Badge(
           showBadge: basket.isNotEmpty,
           badgeContent: Text(

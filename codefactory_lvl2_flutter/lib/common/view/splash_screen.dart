@@ -1,17 +1,11 @@
 import 'package:codefactory_lvl2_flutter/common/const/colors.dart';
-import 'package:codefactory_lvl2_flutter/common/const/data.dart';
 import 'package:codefactory_lvl2_flutter/common/layout/default_layout.dart';
-import 'package:codefactory_lvl2_flutter/common/secure_storage/secure_storage.dart';
-import 'package:codefactory_lvl2_flutter/common/view/root_tab.dart';
-import 'package:codefactory_lvl2_flutter/user/view/login_screen.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
-
 class SplashScreen extends ConsumerWidget {
   static String get routeName => 'splash';
+
   //
   // @override
   // void initState() {

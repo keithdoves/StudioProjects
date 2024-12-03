@@ -13,7 +13,6 @@ part 'user_me_repository.g.dart';
 
 final userMeRepositoryProvider = Provider<UserMeRepository>(
   (ref) {
-    print('2.userMeRepositoryProvider 초기화');
     final Dio dio = ref.watch(dioProvider);
     return UserMeRepository(
       dio,

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:codefactory_lvl2_flutter/common/view/root_tab.dart';
 import 'package:codefactory_lvl2_flutter/common/view/splash_screen.dart';
+import 'package:codefactory_lvl2_flutter/restaurant/view/basket_screen.dart';
 import 'package:codefactory_lvl2_flutter/restaurant/view/restaurant_detail_screen.dart';
 import 'package:codefactory_lvl2_flutter/user/model/user_model.dart';
 import 'package:codefactory_lvl2_flutter/user/provider/user_me_provider.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../order/view/order_done_screen.dart';
 import '../view/login_screen.dart';
 
 final authProvider = ChangeNotifierProvider<AuthProvider>(
@@ -45,6 +47,16 @@ class AuthProvider extends ChangeNotifier {
           ],
         ),
         GoRoute(
+          path: '/basket',
+          name: BasketScreen.routeName,
+          builder: (_, state) => BasketScreen(),
+        ),
+    GoRoute(
+      path: '/order_done',
+      name: OrderDoneScreen.routeName,
+      builder: (_, state) => OrderDoneScreen(),
+    ),
+        GoRoute(
           path: '/splash',
           name: SplashScreen.routeName,
           builder: (_, __) => SplashScreen(),
@@ -66,12 +78,12 @@ class AuthProvider extends ChangeNotifier {
   // 로그인 스크린으로 보내줄지
   // 홈 스크린으로 보내줄지 확인하는 과정이 필요하다.
   FutureOr<String?> redirectLogic(BuildContext context, GoRouterState state) {
-    print('redirectLogic 호출됨: 현재 경로 = ${state.location}');
+    //print('redirectLogic 호출됨: 현재 경로 = ${state.location}');
     final UserModelBase? user = ref.watch(userMeProvider);
     final logginIn = state.location == '/login';
 
     // 유저 정보가 없는데
-    // 로그인중이면 그대로 로그인 페이지에 두고
+    // 로그인 중이면 그대로 로그인 페이지에 두고
     // 만약에 로그인중이 아니라면 로그인 페이지로 이동
     if (user == null) {
       return logginIn ? null : '/login';
