@@ -20,7 +20,7 @@ class HomeScreen extends StatefulWidget {
     // 같은 위젯 인스턴스가 rebuild 되더라도 createState()는 다시 호출되지 않음.
     // createState() 내에서는 context가 아직 할당되지 않았고, 위젯 트리와 연결도 되지 않은 상태
     // 따라서 context나 widget에 접근 불가(애초에 widget은 State 클래스 안에서 해당 위젯 인스턴스를 가리키기 위해 정의된 프로퍼티) 
-    // widget : State 내에서 위젯 인스턴스를 가리킴
+    // widget : State 내에서 위젯 인스턴스를 가리킴(State 클래스 프로퍼티 초기화는 안되고, state의 메서드에서 사용가능)
     // 따라서 createState()에는 코드작성 하지 않는 것이 유지보수, 테스트에 유리하고 설계 의도에 부합함.
   }
 }
