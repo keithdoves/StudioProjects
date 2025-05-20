@@ -1,5 +1,5 @@
 class DateUtils {
-  static DateTimeToString({
+  static String dateTimeToString({
     required DateTime dateTime,
   }) {
     return '${dateTime.year}-${padInteger(number: dateTime.month)}-${padInteger(number: dateTime.day)} ${padInteger(number: dateTime.hour)}:00';
