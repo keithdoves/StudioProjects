@@ -1,14 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../component/measurable_container.dart';
+import '../provider/scroll_controller_provider.dart';
 
-class DashboardLayoutMobile extends StatelessWidget {
+class DashboardLayoutMobile extends ConsumerStatefulWidget {
   const DashboardLayoutMobile({super.key});
 
   @override
+  ConsumerState<DashboardLayoutMobile> createState() =>
+      _DashboardLayoutMobileState();
+}
+
+class _DashboardLayoutMobileState extends ConsumerState<DashboardLayoutMobile> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // NotifierProvider로부터 Notifier 인스턴스를 얻고,
+    // 그 안의 scrollController를 가져옵니다.
+    final scrollController = ref
+        .read(mobileScrollNotifierProvider.notifier)
+        .scrollController;
     final screenWidth = MediaQuery.of(context).size.width;
     return SingleChildScrollView(
+      controller: scrollController,
+      padding: const EdgeInsets.only(
+        top: 188,
+        left: 16,
+        right: 16,
+        bottom: 60,
+      ),
       child: Column(
         //나중에 파라미터로 받기
         children: [

@@ -38,7 +38,7 @@ class _BottomBarTransition extends State<BottomBarTransition> {
         borderRadius: BorderRadius.circular(40),
       ),
       child: Align(
-        alignment: Alignment.topLeft,
+        alignment: Alignment.center,
         heightFactor: heightAnimation.value,
         child: FractionalTranslation(
           translation: offsetAnimation.value,

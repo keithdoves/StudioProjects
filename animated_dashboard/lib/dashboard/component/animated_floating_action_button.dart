@@ -25,7 +25,6 @@ class AnimatedFloatingActionButton extends StatefulWidget {
 
 class _AnimatedFloatingActionButton
     extends State<AnimatedFloatingActionButton> {
-  late final ColorScheme _colorScheme = Theme.of(context).colorScheme;
   late final Animation<double> _scaleAnimation = ScaleAnimation(
     parent: widget.animation,
   );
