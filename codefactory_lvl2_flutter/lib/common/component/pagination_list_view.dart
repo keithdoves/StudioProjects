@@ -25,8 +25,8 @@ class _PaginationListViewState<T extends IModelWithId> extends ConsumerState<Pag
   final ScrollController controller = ScrollController();
 
   @override
-  void initState() {
-    super.initState();
+    void initState() {
+      super.initState();
 
     controller.addListener(listener);
   }
@@ -52,7 +52,7 @@ class _PaginationListViewState<T extends IModelWithId> extends ConsumerState<Pag
 
     // 완전 처음 로딩일때
     if (state is CursorPaginationLoading) {
-      return Center(
+      return const Center(
         child: CircularProgressIndicator(),
       );
     }
@@ -99,7 +99,7 @@ class _PaginationListViewState<T extends IModelWithId> extends ConsumerState<Pag
         },
         child: ListView.separated(
           //리스트가 화면 높이를 초과하지 않아도 스크롤 할 수 있도록 해준다.
-          physics: AlwaysScrollableScrollPhysics(),
+          physics: const AlwaysScrollableScrollPhysics(),
           controller: controller,
           itemCount: cp.data.length + 1,
           itemBuilder: (_, index) {

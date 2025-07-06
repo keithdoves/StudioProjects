@@ -1,21 +1,43 @@
 import 'package:codefactory_lvl2_flutter/common/model/model_with_id.dart';
 import 'package:codefactory_lvl2_flutter/common/repository/base_pagination_repository.dart';
+import 'package:debounce_throttle/debounce_throttle.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../model/cursor_pagination_model.dart';
 import '../model/pagination_params.dart';
+
+class _PaginationInfo {
+  final int fetchCount;
+  final bool fetchMore;
+  final bool forceRefetch;
+
+  _PaginationInfo({
+    this.fetchCount = 20,
+    this.fetchMore = false,
+    this.forceRefetch = false,
+  });
+}
 
 //IBasePaginationRepository를 Implement하면 U 타입이 될 수 있음
 //Pagination할 모델의 타입(T)과 Repository 타입(U)을 제네릭에 넣어주면
 //이 PaginationProvider는 자동으로 페이지네이션 로직을 구현한다.
 class PaginationProvider<T extends IModelWithId,
-U extends IBasePaginationRepository<T>>
+        U extends IBasePaginationRepository<T>>
     extends StateNotifier<CursorPaginationBase> {
   final U repository;
+  final paginationThrottle = Throttle(Duration(seconds: 3),
+      initialValue: _PaginationInfo(), checkEquality: false);
 
   PaginationProvider({
     required this.repository,
   }) : super(CursorPaginationLoading()) {
     paginate();
+    //state에는
+    //처음에는 initialValue가, 다음에는 setValue의 val이 들어간다.
+    paginationThrottle.values.listen(
+      (state) {
+        _throttledPagination(state);
+      },
+    );
   }
 
   // 위젯이 상태를 바라보다 이 함수가 실행되면
@@ -29,6 +51,20 @@ U extends IBasePaginationRepository<T>>
     // true - CursorPaginationLoading()
     bool forceRefetch = false,
   }) async {
+    paginationThrottle.setValue(
+      _PaginationInfo(
+        fetchMore: fetchMore,
+        fetchCount: fetchCount,
+        forceRefetch: forceRefetch,
+      ),
+    );
+  }
+
+  _throttledPagination(_PaginationInfo info) async {
+    final fetchCount = info.fetchCount;
+    final fetchMore = info.fetchMore;
+    final forceRefetch = info.forceRefetch;
+
     try {
       // 5가지 가능성
       // state의 상태
@@ -137,4 +173,3 @@ U extends IBasePaginationRepository<T>>
     // state = resp;
   }
 }
-
