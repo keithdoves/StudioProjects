@@ -4,7 +4,7 @@ import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'dart:math' as math;
 import 'dart:ui';
 
-import 'circles.dart';
+// import 'circles.dart';
 import 'home_data.dart';
 
 /// The main dashboard page widget displaying property listings
@@ -219,7 +219,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Color(0xFF032343).withOpacity(0),
+                      Color(0xFF032343).withAlpha(0),
                       Color(0xFF032343),
                     ],
                     begin: Alignment.bottomCenter,

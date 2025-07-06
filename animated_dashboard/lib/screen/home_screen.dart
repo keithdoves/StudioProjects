@@ -1,4 +1,3 @@
-import 'package:animated_dashboard/dashboard/component/bouncing_button.dart';
 import 'package:animated_dashboard/dashboard/component/disappearing_bottom_liquid_glass_icons.dart';
 import 'package:animated_dashboard/dashboard/layout/dashboard_layout_desktop.dart';
 import 'package:animated_dashboard/dashboard/layout/dashboard_layout_extra_wide.dart';
@@ -12,8 +11,6 @@ import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 
 import '../common/animation/animation.dart';
 import '../common/const/responsive.dart';
-import '../dashboard/component/animated_floating_action_button.dart';
-import '../dashboard/component/disappearing_bottom_navigation_bar.dart';
 import '../dashboard/component/disappearing_navigation_rail.dart';
 import '../dashboard/component/liquid_glass_stacked_appbar.dart';
 import '../dashboard/layout/dashboard_rightbar.dart';

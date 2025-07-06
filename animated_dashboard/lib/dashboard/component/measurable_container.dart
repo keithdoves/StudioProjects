@@ -41,7 +41,7 @@ class _MeasurableContainerState extends State<MeasurableContainer> {
     super.didChangeDependencies();
     // 화면 크기가 변경될 때마다 이 메서드가 호출됩니다.
     // 여기에서 크기 측정 로직을 다시 호출합니다.
-    final newSize = MediaQuery.sizeOf(context);
+    //final newSize = MediaQuery.sizeOf(context);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _measureSize();
     });
