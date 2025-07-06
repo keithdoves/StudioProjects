@@ -19,6 +19,8 @@ class DashboardLayoutExtraWide extends StatelessWidget {
 
     // 1. SingleChildScrollView로 전체를 감쌉니다.
     return SingleChildScrollView(
+      padding: const EdgeInsets.only(
+          top: 200.0),
       child: Column(
         children: [
           // 2. 상단 A/B 섹션에 화면 너비에 비례하는 높이를 지정합니다.

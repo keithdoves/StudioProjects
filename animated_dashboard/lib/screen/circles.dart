@@ -47,7 +47,7 @@ class AnimatedCirclesPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // Configure paint with blue color, transparency, and blur effect
     final paint = Paint()
-      ..color = const Color(0xFF2083A4).withOpacity(0.3)
+      ..color = const Color(0xFF2083A4).withAlpha(80)
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 15);
 
     // Draw each circle at its current animated position

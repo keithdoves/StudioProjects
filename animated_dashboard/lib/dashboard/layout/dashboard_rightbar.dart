@@ -16,7 +16,7 @@ class DashboardRightBar extends StatelessWidget {
     }
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(8.0, 8.0, 24.0, 8.0),
+        padding: const EdgeInsets.fromLTRB(8.0, 200, 24.0, 8.0),
         child: SizedBox(
           height: screenHeight,
           child: Column(

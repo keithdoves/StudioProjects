@@ -9,6 +9,7 @@ class DashboardLayoutTablet extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(8.0, 200, 24.0, 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

@@ -177,197 +177,204 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         builder: (context, _) {
           return Scaffold(
             backgroundColor: Colors.transparent,
-            body: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 1600),
-              child: Stack(
-                children: [
-                  Image.asset(
-                    'assets/other_background.webp',
-                    // pubspec.yaml에 등록한 이미지 경로
-                    fit: BoxFit.cover, // 이미지가 화면 비율과 달라도 꽉 채우도록 설정
-                    width: double.infinity,
-                    height: double.infinity,
-                  ),
-                  Row(
-                    children: [
-                      DisappearingNavigationRail(
-                        isExtended: false,
-                        railAnimation: _railAnimation,
-                        railFabAnimation: _railFabAnimation,
-                        backgroundColor: _backgroundColor,
-                        selectedIndex: _navigationIndex,
-                        onDestinationSelected: (index) {
-                          setState(() {
-                            _navigationIndex = index;
-                            _pageController.jumpToPage(index);
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => DashboardPage(),
+            body: Stack(
+              children: [
+                Image.asset(
+                  'assets/other_background.webp',
+                  // pubspec.yaml에 등록한 이미지 경로
+                  fit: BoxFit.cover, // 이미지가 화면 비율과 달라도 꽉 채우도록 설정
+                  width: double.infinity,
+                  height: double.infinity,
+                ),
+                Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 1600),
+                    child: Row(
+                      children: [
+                        DisappearingNavigationRail(
+                          isExtended: false,
+                          railAnimation: _railAnimation,
+                          railFabAnimation: _railFabAnimation,
+                          backgroundColor: _backgroundColor,
+                          selectedIndex: _navigationIndex,
+                          onDestinationSelected: (index) {
+                            setState(() {
+                              _navigationIndex = index;
+                              _pageController.jumpToPage(index);
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => DashboardPage(),
+                                ),
+                              );
+                            });
+                          },
+                        ),
+                        Expanded(
+                          child: Container(
+                            color: Colors.transparent,
+                            child: ResponsiveLayout(
+                              mobileBody: DashboardLayoutMobile(),
+                              tabletBody: DashboardLayoutTablet(),
+                              desktopBody: DashboardLayoutDesktop(),
+                              desktopWideBody: DashboardLayoutDesktop(),
+                              desktopExtraWideBody: ListDetailTransition(
+                                animation: _detailAnimation,
+                                one: DashboardLayoutExtraWide(),
+                                two: DashboardRightBar(),
                               ),
-                            );
-                          });
-                        },
-                      ),
-                      Expanded(
-                        child: Container(
-                          color: Colors.transparent,
-                          child: ResponsiveLayout(
-                            mobileBody: DashboardLayoutMobile(),
-                            tabletBody: DashboardLayoutTablet(),
-                            desktopBody: DashboardLayoutDesktop(),
-                            desktopWideBody: DashboardLayoutDesktop(),
-                            desktopExtraWideBody: ListDetailTransition(
-                              animation: _detailAnimation,
-                              one: DashboardLayoutExtraWide(),
-                              two: DashboardRightBar(),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      height: 200,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xFF032343).withAlpha(0),
-                            Color(0xFF032343),
-                          ],
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
-                        ),
+                ),
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: 200,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0xFF032343).withAlpha(0),
+                          Color(0xFF032343),
+                        ],
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
                       ),
                     ),
                   ),
-                  SafeArea(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        top: 4.0,
-                        left: 16.0,
-                        right: 16.0,
-                      ),
-                      child: Column(
-                        children: [
-                          LiquidGlassStackedAppbar(screenWidth: screenWidth),
-                          const Spacer(),
-                          /*Padding(
-                            //Start of Bottom Navigation Bar
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                            ),
-                            child: LiquidGlassLayer(
-                              settings: LiquidGlassSettings(
-                                ambientStrength: 0.5,
-                                lightAngle: 0.2 * math.pi,
-                                glassColor: Colors.white12,
+                ),
+                Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 1600),
+                    child: SafeArea(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          top: 4.0,
+                          left: 16.0,
+                          right: 16.0,
+                        ),
+                        child: Column(
+                          children: [
+                            LiquidGlassStackedAppbar(screenWidth: screenWidth),
+                            const Spacer(),
+                            /*Padding(
+                              //Start of Bottom Navigation Bar
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
                               ),
-                              child: AnimatedSize(
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeOut,
-                                alignment: Alignment.center,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    LiquidGlass.inLayer(
-                                      //blur: 3,
-                                      shape: LiquidRoundedSuperellipse(
-                                        borderRadius: const Radius.circular(40),
-                                      ),
-                                      glassContainsChild: false,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: Row(
-                                          children: [
-                                            const SizedBox(width: 4),
-                                            IconButton(
-                                              icon: Icon(Icons.home_outlined),
-                                              color: Colors.white,
-                                              iconSize: 24,
-                                              selectedIcon: Icon(Icons.home),
-                                              isSelected: isHomeSelected,
-                                              onPressed: () {
-                                                setState(() {
-                                                  isHomeSelected =
-                                                      !isHomeSelected;
-                                                  print(
-                                                    'isHomeSelected: $isHomeSelected',
-                                                  );
-                                                });
-                                              },
-                                            ),
-                                            const SizedBox(width: 8),
-                                            Padding(
-                                              padding: const EdgeInsets.all(
-                                                8.0,
-                                              ),
-                                              child: Icon(
-                                                Icons.favorite_border_rounded,
+                              child: LiquidGlassLayer(
+                                settings: LiquidGlassSettings(
+                                  ambientStrength: 0.5,
+                                  lightAngle: 0.2 * math.pi,
+                                  glassColor: Colors.white12,
+                                ),
+                                child: AnimatedSize(
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeOut,
+                                  alignment: Alignment.center,
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      LiquidGlass.inLayer(
+                                        //blur: 3,
+                                        shape: LiquidRoundedSuperellipse(
+                                          borderRadius: const Radius.circular(40),
+                                        ),
+                                        glassContainsChild: false,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Row(
+                                            children: [
+                                              const SizedBox(width: 4),
+                                              IconButton(
+                                                icon: Icon(Icons.home_outlined),
                                                 color: Colors.white,
-                                                size: 24,
+                                                iconSize: 24,
+                                                selectedIcon: Icon(Icons.home),
+                                                isSelected: isHomeSelected,
+                                                onPressed: () {
+                                                  setState(() {
+                                                    isHomeSelected =
+                                                        !isHomeSelected;
+                                                    print(
+                                                      'isHomeSelected: $isHomeSelected',
+                                                    );
+                                                  });
+                                                },
                                               ),
-                                            ),
-                                          ],
+                                              const SizedBox(width: 8),
+                                              Padding(
+                                                padding: const EdgeInsets.all(
+                                                  8.0,
+                                                ),
+                                                child: Icon(
+                                                  Icons.favorite_border_rounded,
+                                                  color: Colors.white,
+                                                  size: 24,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    AnimatedSize(
-                                      alignment: Alignment.center,
-                                      duration: const Duration(
-                                        milliseconds: 300,
-                                      ),
-                                      curve: Curves.easeOut,
-                                      child: Container(
-                                        width: tabSpacing,
-                                        height: 0,
-                                      ),
-                                    ),
-                                    LiquidGlass.inLayer(
-                                      //blur: 3,
-                                      shape: LiquidRoundedSuperellipse(
-                                        borderRadius: const Radius.circular(40),
-                                      ),
-                                      glassContainsChild: false,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(12.0),
-                                        child: Icon(
-                                          Icons.person_outline,
-                                          color: Colors.white,
-                                          size: 32,
+                                      AnimatedSize(
+                                        alignment: Alignment.center,
+                                        duration: const Duration(
+                                          milliseconds: 300,
+                                        ),
+                                        curve: Curves.easeOut,
+                                        child: Container(
+                                          width: tabSpacing,
+                                          height: 0,
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                      LiquidGlass.inLayer(
+                                        //blur: 3,
+                                        shape: LiquidRoundedSuperellipse(
+                                          borderRadius: const Radius.circular(40),
+                                        ),
+                                        glassContainsChild: false,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(12.0),
+                                          child: Icon(
+                                            Icons.person_outline,
+                                            color: Colors.white,
+                                            size: 32,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          */
-                          DisappearingBottomLiquidGlassIcons(
-                            tabSpacing: tabSpacing,
-                            onPressed: () {
-                              setState(() {
-                                isHomeSelected = !isHomeSelected;
-                                print('isHomeSelected: $isHomeSelected');
-                              });
-                            },
-                            isHomeSelected: isHomeSelected,
-                            barAnimation: _barAnimation,
-                            selectedIndex: selectedIndex,
-                          ),
-                          SizedBox(
-                            height: 6,
-                          ),
-                        ],
+                            */
+                            DisappearingBottomLiquidGlassIcons(
+                              tabSpacing: tabSpacing,
+                              onPressed: () {
+                                setState(() {
+                                  isHomeSelected = !isHomeSelected;
+                                  print('isHomeSelected: $isHomeSelected');
+                                });
+                              },
+                              isHomeSelected: isHomeSelected,
+                              barAnimation: _barAnimation,
+                              selectedIndex: selectedIndex,
+                            ),
+                            SizedBox(
+                              height: 6,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
 
             /*f
