@@ -82,16 +82,17 @@ class DisappearingBottomLiquidGlassIcons extends StatelessWidget {
                     ),
                   ),
                 ),
-                AnimatedSize(
-                  alignment: Alignment.center,
-                  duration: const Duration(
-                    milliseconds: 300,
-                  ),
-                  curve: Curves.easeOut,
-                  child:  SizedBox(
-                    width: tabSpacing,
-                    height: 0,
-                  ),
+                TweenAnimationBuilder<double>(
+                  tween: Tween<double>(begin: 0.0, end: tabSpacing),
+                  duration: const Duration(milliseconds: 600),
+                  curve: ElasticOutCurve(0.76),//Curves.elasticOut,
+                  builder: (context, spacing, child) {
+                    // 애니메이션 값이 음수가 되지 않도록 clamp 처리
+                    return SizedBox(
+                      width: spacing.clamp(0.0, double.infinity),
+                      height: 0,
+                    );
+                  },
                 ),
                 LiquidGlass.inLayer(
                   //blur: 3,

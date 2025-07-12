@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../component/chart/wide_gauge_chart.dart';
 import '../component/measurable_container.dart';
 
 class DashboardLayoutTablet extends StatelessWidget {
@@ -13,17 +14,14 @@ class DashboardLayoutTablet extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // A A: 상단 영역 (세로 2/5 차지)
+          // A A: 상단 영역 (세로 2/5 차지)   s
           SizedBox(
             height: screenWidth * 0.27,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Expanded(
-                  child: MeasurableContainer(
-                    text: 'A1',
-                    color: Colors.white.withAlpha(40),
-                  ),
+                  child: WideGaugeChart(),
                 ),
                 Expanded(
                   child: MeasurableContainer(

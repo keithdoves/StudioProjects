@@ -71,13 +71,13 @@ class LiquidGlassStackedAppbar extends StatelessWidget {
           ],
         ),
         SizedBox(
-          width: 40,
+          width: 20,
         ),
         Text(
           'Total Width $screenWidth',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 20,
+            fontSize: 12,
           ),
         ),
         const Spacer(),

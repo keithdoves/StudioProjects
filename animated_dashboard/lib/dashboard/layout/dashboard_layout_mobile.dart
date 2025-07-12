@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../component/chart/gauge_chart.dart';
 import '../component/measurable_container.dart';
 import '../provider/scroll_controller_provider.dart';
 
@@ -30,8 +31,8 @@ class _DashboardLayoutMobileState extends ConsumerState<DashboardLayoutMobile> {
       controller: scrollController,
       padding: const EdgeInsets.only(
         top: 188,
-        left: 16,
-        right: 16,
+        left: 4,
+        right: 4,
         bottom: 60,
       ),
       child: Column(
@@ -44,20 +45,24 @@ class _DashboardLayoutMobileState extends ConsumerState<DashboardLayoutMobile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  child: MeasurableContainer(
-                    text: 'A1',
-                    color: Colors.white.withAlpha(40),
-                    minWidth: 300,
-                    maxHeight: 300,
-                  ),
+                  child: GaugeChart(),
                 ),
                 Expanded(
-                  child: MeasurableContainer(
-                    text: 'A2',
-                    color: Colors.white.withAlpha(40),
-                    minWidth: 300,
-                    maxHeight: 300,
-                  ),
+                  child: GaugeChart()
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: screenWidth * 0.4,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: GaugeChart(),
+                ),
+                Expanded(
+                  child: GaugeChart(),
                 ),
               ],
             ),

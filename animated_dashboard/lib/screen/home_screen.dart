@@ -1,21 +1,19 @@
 import 'package:animated_dashboard/dashboard/component/disappearing_bottom_liquid_glass_icons.dart';
 import 'package:animated_dashboard/dashboard/layout/dashboard_layout_desktop.dart';
-import 'package:animated_dashboard/dashboard/layout/dashboard_layout_extra_wide.dart';
+import 'package:animated_dashboard/dashboard/layout/dashboard_layout_extreme_wide.dart';
 import 'package:animated_dashboard/dashboard/layout/dashboard_layout_mobile.dart';
 import 'package:animated_dashboard/dashboard/layout/dashboard_layout_tablet.dart';
 import 'package:animated_dashboard/dashboard/layout/responsive_layout.dart';
-import 'package:animated_dashboard/screen/sbis04_demo_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 
 import '../common/animation/animation.dart';
+import '../common/animation/draggable_widget.dart';
 import '../common/const/responsive.dart';
-import '../dashboard/component/disappearing_navigation_rail.dart';
+import '../dashboard/component/disappearing_liquid_glass_navigation_rail.dart';
 import '../dashboard/component/liquid_glass_stacked_appbar.dart';
 import '../dashboard/layout/dashboard_rightbar.dart';
 import '../dashboard/models/models.dart';
-import 'dart:math' as math;
 
 import '../dashboard/provider/scroll_controller_provider.dart';
 import '../dashboard/transition/list_detail_transition.dart';
@@ -181,49 +179,67 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               children: [
                 Image.asset(
                   'assets/other_background.webp',
-                  // pubspec.yaml에 등록한 이미지 경로
-                  fit: BoxFit.cover, // 이미지가 화면 비율과 달라도 꽉 채우도록 설정
+                  fit: BoxFit.cover,
                   width: double.infinity,
                   height: double.infinity,
                 ),
                 Center(
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 1600),
-                    child: Row(
+                    child: Stack(
+                      // Row를 Stack으로 변경
                       children: [
-                        DisappearingNavigationRail(
-                          isExtended: false,
-                          railAnimation: _railAnimation,
-                          railFabAnimation: _railFabAnimation,
-                          backgroundColor: _backgroundColor,
-                          selectedIndex: _navigationIndex,
-                          onDestinationSelected: (index) {
-                            setState(() {
-                              _navigationIndex = index;
-                              _pageController.jumpToPage(index);
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => DashboardPage(),
-                                ),
-                              );
-                            });
-                          },
-                        ),
-                        Expanded(
-                          child: Container(
-                            color: Colors.transparent,
-                            child: ResponsiveLayout(
-                              mobileBody: DashboardLayoutMobile(),
-                              tabletBody: DashboardLayoutTablet(),
-                              desktopBody: DashboardLayoutDesktop(),
-                              desktopWideBody: DashboardLayoutDesktop(),
-                              desktopExtraWideBody: ListDetailTransition(
-                                animation: _detailAnimation,
-                                one: DashboardLayoutExtraWide(),
-                                two: DashboardRightBar(),
+                        // 1. 아래층 (배치 담당): 눈에 보이지 않지만 자리를 차지함
+                        Row(
+                          children: [
+                            // DraggableWidget의 자식인 Rail 위젯을 투명하게 만들어 자리만 차지하게 함
+                            // ✨ 크기를 정확히 맞추기 위해 실제 위젯과 동일한 내용으로 구성
+                            Visibility(
+                              visible: false, // 위젯을 보이지 않게 함
+                              maintainState: true, // 상태는 유지
+                              maintainAnimation: true, // 애니메이션도 유지
+                              maintainSize: true, // ✨ 레이아웃 공간은 차지하고, 그리기(paint)는 건너뜀
+                              child: DisappearingLiquidGlassNavigationRail(
+                                isExtended: isExtended,
+                                railAnimation: _railAnimation,
+                                railFabAnimation: _railFabAnimation,
+                                backgroundColor: _backgroundColor,
+                                selectedIndex: _navigationIndex,
                               ),
                             ),
-                          ),
+                            // ResponsiveLayout은 투명 위젯 때문에 옆으로 밀려나 제자리를 잡음
+                            Expanded(
+                              child: Container(
+                                color: Colors.transparent,
+                                child: ResponsiveLayout(
+                                  mobileBody: DashboardLayoutMobile(),
+                                  tabletBody: DashboardLayoutTablet(),
+                                  desktopBody: DashboardLayoutDesktop(),
+                                  desktopWideBody: DashboardLayoutDesktop(),
+                                  desktopExtraWideBody: ListDetailTransition(
+                                    animation: _detailAnimation,
+                                    one: DashboardLayoutExtremeWideDesktop(),
+                                    two: DashboardRightBar(),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        // 2. 위층 (실제 보이는 위젯): 아래층 레이아웃 위에 그려짐
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            DraggableWidget(
+                              child: DisappearingLiquidGlassNavigationRail(
+                                isExtended: isExtended,
+                                railAnimation: _railAnimation,
+                                railFabAnimation: _railFabAnimation,
+                                backgroundColor: _backgroundColor,
+                                selectedIndex: _navigationIndex,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -238,8 +254,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          Color(0xFF032343).withAlpha(0),
-                          Color(0xFF032343),
+                          const Color(0xFF032343).withAlpha(0),
+                          const Color(0xFF032343),
                         ],
                         begin: Alignment.bottomCenter,
                         end: Alignment.topCenter,
@@ -261,98 +277,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           children: [
                             LiquidGlassStackedAppbar(screenWidth: screenWidth),
                             const Spacer(),
-                            /*Padding(
-                              //Start of Bottom Navigation Bar
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                              ),
-                              child: LiquidGlassLayer(
-                                settings: LiquidGlassSettings(
-                                  ambientStrength: 0.5,
-                                  lightAngle: 0.2 * math.pi,
-                                  glassColor: Colors.white12,
-                                ),
-                                child: AnimatedSize(
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeOut,
-                                  alignment: Alignment.center,
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      LiquidGlass.inLayer(
-                                        //blur: 3,
-                                        shape: LiquidRoundedSuperellipse(
-                                          borderRadius: const Radius.circular(40),
-                                        ),
-                                        glassContainsChild: false,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(4.0),
-                                          child: Row(
-                                            children: [
-                                              const SizedBox(width: 4),
-                                              IconButton(
-                                                icon: Icon(Icons.home_outlined),
-                                                color: Colors.white,
-                                                iconSize: 24,
-                                                selectedIcon: Icon(Icons.home),
-                                                isSelected: isHomeSelected,
-                                                onPressed: () {
-                                                  setState(() {
-                                                    isHomeSelected =
-                                                        !isHomeSelected;
-                                                    print(
-                                                      'isHomeSelected: $isHomeSelected',
-                                                    );
-                                                  });
-                                                },
-                                              ),
-                                              const SizedBox(width: 8),
-                                              Padding(
-                                                padding: const EdgeInsets.all(
-                                                  8.0,
-                                                ),
-                                                child: Icon(
-                                                  Icons.favorite_border_rounded,
-                                                  color: Colors.white,
-                                                  size: 24,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      AnimatedSize(
-                                        alignment: Alignment.center,
-                                        duration: const Duration(
-                                          milliseconds: 300,
-                                        ),
-                                        curve: Curves.easeOut,
-                                        child: Container(
-                                          width: tabSpacing,
-                                          height: 0,
-                                        ),
-                                      ),
-                                      LiquidGlass.inLayer(
-                                        //blur: 3,
-                                        shape: LiquidRoundedSuperellipse(
-                                          borderRadius: const Radius.circular(40),
-                                        ),
-                                        glassContainsChild: false,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(12.0),
-                                          child: Icon(
-                                            Icons.person_outline,
-                                            color: Colors.white,
-                                            size: 32,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            */
                             DisappearingBottomLiquidGlassIcons(
                               tabSpacing: tabSpacing,
                               onPressed: () {
@@ -365,7 +289,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               barAnimation: _barAnimation,
                               selectedIndex: selectedIndex,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 6,
                             ),
                           ],
@@ -376,73 +300,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                 ),
               ],
             ),
-
-            /*f
-            floatingActionButton: AnimatedFloatingActionButton(
-              animation: _barAnimation,
-              onPressed: () {},
-              child: const Icon(Icons.add),
-            ),
-            */
-
-            /*
-
-            bottomNavigationBar: DisappearingBottomNavigationBar(
-              barAnimation: _barAnimation,
-              selectedIndex: selectedIndex,
-              onDestinationSelected: (index) {
-                setState(() {
-                  selectedIndex = index;
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => DashboardPage()),
-                  );
-                });
-              },
-            ),
-
-            */
-
-            /*Positioned(
-            child: SizedBox(
-              width: screenWidth,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  liquidGlassNavBar(),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  BouncingActionButton(
-                    icon: Icons.add,
-                    onTap: () {},
-                    useLiquidGlass: useLiquidGlass,
-                  ),
-                ],
-              ),
-            ),
-          ),*/
           );
         },
       ),
-    );
-  }
-
-  Widget liquidGlassNavBar() {
-    if (!useLiquidGlass) {
-      return navBar();
-    }
-
-    return LiquidGlass(
-      // blur: 10,
-      settings: const LiquidGlassSettings(
-        ambientStrength: 2,
-        lightAngle: 0.4 * math.pi,
-        glassColor: Colors.black12,
-        thickness: 30,
-      ),
-      shape: const LiquidRoundedSuperellipse(borderRadius: Radius.circular(50)),
-      glassContainsChild: false,
-      child: navBar(opacity: 0.3),
     );
   }
 
@@ -465,39 +325,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
           ),
         ],
       ),
-    );
-  }
-
-  Widget navBar({double opacity = 1}) {
-    return Container(
-      height: 60,
-      width: 284,
-      decoration: BoxDecoration(
-        color: Colors.grey.withValues(alpha: opacity),
-        borderRadius: const BorderRadius.all(Radius.circular(30)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.only(top: 5.0),
-        child: Row(
-          children: [
-            iconItem(Icons.home),
-            iconItem(Icons.access_alarm),
-            iconItem(Icons.settings),
-            iconItem(Icons.person),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget iconItem(IconData icon) {
-    return Container(
-      width: 70,
-      height: 50,
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(50)),
-      ),
-      child: Center(child: Icon(icon, size: 22, color: Colors.white)),
     );
   }
 }

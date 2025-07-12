@@ -7,24 +7,19 @@ class MeasurableContainer extends StatefulWidget {
   final double? minWidth;
   final double? maxHeight;
 
-  const MeasurableContainer(
-      {Key? key, // Key를 외부에서 받을 수 있도록 변경
-        required this.text,
-        required this.color,
-        this.minWidth,
-        this.maxHeight})
-      : super(key: key); // super(key: key)로 key를 전달
+  const MeasurableContainer({
+    Key? key, // Key를 외부에서 받을 수 있도록 변경
+    required this.text,
+    required this.color,
+    this.minWidth,
+    this.maxHeight,
+  }) : super(key: key); // super(key: key)로 key를 전달
 
   @override
   State<MeasurableContainer> createState() => _MeasurableContainerState();
 }
 
 class _MeasurableContainerState extends State<MeasurableContainer> {
-
-
-
-
-
   final GlobalKey _containerKey = GlobalKey(); // 각 인스턴스마다 고유한 GlobalKey
   Size _currentSize = Size.zero; // 각 인스턴스마다 고유한 크기 상태
 
@@ -49,12 +44,10 @@ class _MeasurableContainerState extends State<MeasurableContainer> {
 
   void _measureSize() {
     final renderBox =
-    _containerKey.currentContext?.findRenderObject() as RenderBox?;
+        _containerKey.currentContext?.findRenderObject() as RenderBox?;
     if (renderBox != null) {
       setState(() {
         _currentSize = renderBox.size;
-        // 디버깅을 위해 각 컨테이너의 크기를 콘솔에 출력
-
       });
     }
   }
@@ -64,17 +57,17 @@ class _MeasurableContainerState extends State<MeasurableContainer> {
     final effectiveMaxHeight = widget.maxHeight ?? double.infinity;
 
     return Container(
-      key: _containerKey, // 각 MeasurableContainer 인스턴스가 이 키를 사용
+      key: _containerKey,
+      // 각 MeasurableContainer 인스턴스가 이 키를 사용
       constraints: BoxConstraints(
         minWidth: widget.minWidth ?? 0,
         maxHeight: effectiveMaxHeight,
       ),
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(8.0),
       margin: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        color: widget.color,
-        border: Border.all(color: Colors.white.withAlpha(90),
-        width: 2.0),
+        color: Colors.black54.withAlpha(40),
+        border: Border.all(color: Colors.white.withAlpha(90), width: 2.0),
 
         borderRadius: BorderRadius.circular(25),
       ),
@@ -82,7 +75,10 @@ class _MeasurableContainerState extends State<MeasurableContainer> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(widget.text, style: const TextStyle(fontSize: 14, color: Colors.white)),
+            Text(
+              widget.text,
+              style: const TextStyle(fontSize: 14, color: Colors.white),
+            ),
             /*       if (widget.minWidth != null)
               Text('minWidth ${widget.minWidth!.toStringAsFixed(1)}'),
             if (widget.maxHeight != null && widget.maxHeight != double.infinity)

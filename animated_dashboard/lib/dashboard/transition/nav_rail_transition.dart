@@ -51,7 +51,7 @@ class _NavRailTransitionState extends State<NavRailTransition> {
           builder: (context, child) {
             return Align(
 
-              alignment: Alignment.topLeft,
+              alignment: Alignment.center,
               widthFactor: widthAnimation.value,
               child: FractionalTranslation(
                 //FractionalTranslation은 레이아웃 역할을 하지 않고

@@ -19,6 +19,15 @@ class BreakPoint{
 /// This is the point where the UI transitions from `BottomNavigationBar`
 /// to `NavRail` and `MainContent_Mobile` to `MainContent_Tablet`.
 ///
+/// **Value: 400.0**
+const double MOBILE_MAX_WIDTH = 440.0;
+
+
+/// The minimum width for the tablet layout and above.
+///
+/// This is the point where the UI transitions from `BottomNavigationBar`
+/// to `NavRail` and `MainContent_Mobile` to `MainContent_Tablet`.
+///
 /// **Value: 768.0**
 const double TABLET_MIN_WIDTH = 768.0;
 
