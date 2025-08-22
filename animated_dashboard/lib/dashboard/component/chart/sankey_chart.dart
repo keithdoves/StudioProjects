@@ -17,6 +17,8 @@ class _SankeyChartState extends State<SankeyChart> {
   int? selectedNodeId;
   late SankeyDataSet sankeyDataSet;
 
+  Key _sankeyKey = UniqueKey();
+
   @override
   void initState() {
     super.initState();
@@ -101,7 +103,13 @@ class _SankeyChartState extends State<SankeyChart> {
 
   /// Shows all links in and out of a node.
   void _handleNodeTap(int? nodeId) {
-    setState(() => selectedNodeId = nodeId);
+    // setState 부분을 아래와 같이 수정합니다.
+    setState(() {
+      selectedNodeId = nodeId;
+      _sankeyKey = UniqueKey();
+      // 이 줄을 추가하여 Painter가 강제로 다시 그리도록 합니다.
+      nodeColors = Map.from(nodeColors);
+    });
 
     if (nodeId == null) {
       ScaffoldMessenger.of(
@@ -137,6 +145,7 @@ class _SankeyChartState extends State<SankeyChart> {
       // 여기서는 링크의 source 노드를 강조합니다.
       // 필요에 따라 chain.first.source.id 같은 다른 아이디를 써도 됩니다.
       selectedNodeId = (link.source as SankeyNode).id;
+      _sankeyKey = UniqueKey();
     });
 
     // The very first node label (upstream-most source):
@@ -165,6 +174,7 @@ class _SankeyChartState extends State<SankeyChart> {
     return Center(
       child: SingleChildScrollView(
         child: SankeyDiagramWidget(
+          key: _sankeyKey,
           data: sankeyDataSet,
           nodeColors: nodeColors,
           selectedNodeId: selectedNodeId,
