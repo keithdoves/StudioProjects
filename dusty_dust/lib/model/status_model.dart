@@ -20,7 +20,7 @@ final String comment;
 final double minPM10;
 final double minPM25;
 final double minO3;
-final double MinNO2;
+final double minNO2;
 final double minCO;
 final double minSO2;
 

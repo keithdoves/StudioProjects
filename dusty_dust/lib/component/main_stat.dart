@@ -23,8 +23,8 @@ class MainStat extends StatelessWidget {
     required this.primaryColor,
     required this.region,
     required this.isExpanded,
-    Key ? key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +77,7 @@ class MainStat extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        DateUtils.DateTimeToString(dateTime: statModel.dateTime),
+                        DateUtils.dateTimeToString(dateTime: statModel.dateTime),
                         style: ts.copyWith(
                           fontSize: 20.0,
                         ),
