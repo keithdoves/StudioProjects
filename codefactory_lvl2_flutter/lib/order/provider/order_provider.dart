@@ -5,37 +5,29 @@ import 'package:codefactory_lvl2_flutter/order/model/post_order_body.dart';
 import 'package:codefactory_lvl2_flutter/order/repository/order_repository.dart';
 import 'package:codefactory_lvl2_flutter/user/provider/basket_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
 
-final orderProvider =
-    StateNotifierProvider<OrderStateNotifier, CursorPaginationBase>(
-  (ref) {
-    final repo = ref.watch(orderRepositoryProvider);
-    return OrderStateNotifier(
-      ref: ref,
-      repository: repo,
-    );
-  },
-);
+part 'order_provider.g.dart';
 
-class OrderStateNotifier
-    extends PaginationProvider<OrderModel, OrderRepository> {
-  final Ref ref; //이렇게 주입 받을 수 있음
-
-  OrderStateNotifier({
-    required this.ref,
-    required super.repository,
-  });
+@riverpod
+class Order extends _$Order {
+  @override
+  CursorPaginationBase build() {
+    final repository = ref.watch(orderRepositoryProvider);
+    return initialize(repository);
+  }
 
   Future<bool> postOrder() async {
     try {
       final uuid = Uuid();
       final id = uuid.v4();
-      final state = ref.read(basketProvider);
-      final resp = await repository.postOrder(
+      final basketState = ref.read(basketProvider);
+
+      await repository.postOrder(
         body: PostOrderBody(
           id: id,
-          products: state
+          products: basketState
               .map(
                 (e) => PostOrderBodyProduct(
                   productId: e.product.id,
@@ -43,14 +35,14 @@ class OrderStateNotifier
                 ),
               )
               .toList(),
-          totalPrice: state.fold<int>(
+          totalPrice: basketState.fold<int>(
             0,
             (p, n) => p + (n.count * n.product.price),
           ),
           createdAt: DateTime.now().toString(),
         ),
       );
-      print('ORDER_PROVIDER_postOrder : ${state.length}');
+
       return true;
     } catch (e) {
       return false;
