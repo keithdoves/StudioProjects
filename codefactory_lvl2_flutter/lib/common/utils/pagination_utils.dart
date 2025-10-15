@@ -1,3 +1,4 @@
+import 'package:codefactory_lvl2_flutter/restaurant/provider/restaurant_provider.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../provider/pagination_provider.dart';
@@ -5,10 +6,10 @@ import '../provider/pagination_provider.dart';
 class PaginationUtils {
   static void paginate({
     required ScrollController controller,
-    required CursorPaginationController<dynamic> notifier,
+    required PaginationProvider provider,
   }) {
     if (controller.offset > controller.position.maxScrollExtent - 300) {
-      notifier.paginate(
+      provider.paginate(
         fetchMore: true,
       );
     }

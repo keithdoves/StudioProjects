@@ -1,41 +1,53 @@
 import 'package:codefactory_lvl2_flutter/common/const/data.dart';
-import 'package:codefactory_lvl2_flutter/common/secure_storage/secure_storage.dart';
-import 'package:codefactory_lvl2_flutter/user/model/user_model.dart';
 import 'package:codefactory_lvl2_flutter/user/repository/auth_repository.dart';
 import 'package:codefactory_lvl2_flutter/user/repository/user_me_repository.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-part 'user_me_provider.g.dart';
+import '../../common/secure_storage/secure_storage.dart';
+import '../model/user_model.dart';
 
-@riverpod
-class UserMe extends _$UserMe {
-  late final AuthRepository _authRepository;
-  late final UserMeRepository _userMeRepository;
-  late final FlutterSecureStorage _storage;
+final userMeProvider =
 
-  @override
-  UserModelBase? build() {
-    _authRepository = ref.watch(authRepositoryProvider);
-    _userMeRepository = ref.watch(userMeRepositoryProvider);
-    _storage = ref.watch(secureStorageProvider);
+    StateNotifierProvider<UserMeStateNotifier, UserModelBase?>(
+  (ref) {
+    print('userMeProvider 초기화');
+    final authRepository = ref.watch(authRepositoryProvider);
+    final userMeRepository = ref.watch(userMeRepositoryProvider);
+    final storage = ref.watch(secureStorageProvider);
 
+    return UserMeStateNotifier(
+      repository: userMeRepository,
+      storage: storage,
+      authRepository: authRepository,
+    );
+  },
+);
+
+class UserMeStateNotifier extends StateNotifier<UserModelBase?> {
+  final AuthRepository authRepository;
+  final UserMeRepository repository;
+  final FlutterSecureStorage storage;
+
+  UserMeStateNotifier({
+    required this.repository,
+    required this.storage,
+    required this.authRepository,
+  }) : super(UserModelLoading()) {
     getMe();
-
-    return UserModelLoading();
   }
 
   Future<void> getMe() async {
-    final refreshToken = await _storage.read(key: REFRESH_TOKEN_KEY);
-    final accessToken = await _storage.read(key: ACCESS_TOKEN_KEY);
+    final refreshToken = await storage.read(key: REFRESH_TOKEN_KEY);
+    final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
 
     if (refreshToken == null || accessToken == null) {
+      //상태를 null로 만들어 로그오프 상태를 알려줘야 함.
       state = null;
       return;
     }
 
-    final resp = await _userMeRepository.getMe();
+    final resp = await repository.getMe();
     state = resp;
   }
 
@@ -44,33 +56,41 @@ class UserMe extends _$UserMe {
     required String password,
   }) async {
     try {
+      print('login Method : 로그인 시작');
       state = UserModelLoading();
 
-      final resp = await _authRepository.login(
+      final resp = await authRepository.login(
         username: username,
         password: password,
       );
-      await _storage.write(key: REFRESH_TOKEN_KEY, value: resp.refreshToken);
-      await _storage.write(key: ACCESS_TOKEN_KEY, value: resp.accessToken);
+      await storage.write(key: REFRESH_TOKEN_KEY, value: resp.refreshToken);
+      await storage.write(key: ACCESS_TOKEN_KEY, value: resp.accessToken);
 
-      final userResp = await _userMeRepository.getMe();
+      final userResp = await repository.getMe();
+
 
       state = userResp;
 
       return userResp;
     } catch (e) {
+      print('login Method Error Occured');
       state = UserModelError(message: '로그인에 실패했습니다.');
+
       return Future.value(state);
     }
   }
 
   Future<void> logout() async {
     state = null;
+    //상태가 null 일 때, login으로
+    //이동하도록 redirect 설정함.
+    //따라서 null 되는 순간 login 페이지 이동
+    
 
-    await Future.wait(
+    Future.wait(
       [
-        _storage.delete(key: REFRESH_TOKEN_KEY),
-        _storage.delete(key: ACCESS_TOKEN_KEY),
+        storage.delete(key: REFRESH_TOKEN_KEY),
+        storage.delete(key: ACCESS_TOKEN_KEY),
       ],
     );
   }
